@@ -2,18 +2,22 @@ import React from 'react';
 import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
+const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
+
 const ListItem = (props) => {
   return (
     <TouchableOpacity style={styles.mediaItem}>
       <View style={styles.itemImageContainer}>
         <Image
           style={styles.itemImage}
-          source={{uri: props.singleMedia.thumbnails.w160}}
+          source={{uri: mediaUploads + props.singleMedia.thumbnails.w640}}
         />
       </View>
       <View style={styles.itemTextContainer}>
         <Text style={styles.itemCaption}>{props.singleMedia.title}</Text>
-        <Text>{props.singleMedia.description}</Text>
+        <Text style={styles.itemDescription}>
+          {props.singleMedia.description}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -25,10 +29,9 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'gray',
-    width: '100%',
   },
   itemImageContainer: {
     flex: 1,
@@ -36,13 +39,20 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 1,
+    width: 100,
+    height: 100,
   },
   itemTextContainer: {
     flex: 1,
+    padding: 20,
   },
   itemCaption: {
     flex: 1,
     fontWeight: 'bold',
+  },
+  itemDescription: {
+    flex: 1,
+    marginTop: 6,
   },
 });
 
