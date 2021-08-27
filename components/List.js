@@ -21,7 +21,6 @@ const List = () => {
       </View>
       <View style={styles.list}>
         <FlatList
-          style={styles.list}
           data={mediaArray}
           keyExtractor={(item) => item.file_id.toString()}
           renderItem={({item}) => <ListItem singleMedia={item} />}
