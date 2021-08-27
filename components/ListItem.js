@@ -25,34 +25,36 @@ const ListItem = (props) => {
 
 const styles = StyleSheet.create({
   mediaItem: {
-    marginTop: 4,
+    marginTop: 8,
     padding: 10,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'gray',
+    justifyContent: 'flex-start',
+    backgroundColor: '#233043',
   },
   itemImageContainer: {
     flex: 1,
-    padding: 20,
+    padding: 10,
   },
   itemImage: {
-    flex: 1,
-    width: 100,
+    width: 'auto',
     height: 100,
+    borderBottomLeftRadius: 50,
   },
   itemTextContainer: {
     flex: 1,
-    padding: 20,
+    padding: 10,
   },
   itemCaption: {
-    flex: 1,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   itemDescription: {
-    flex: 1,
-    marginTop: 6,
+    marginTop: 4,
+    fontSize: 14,
+    color: '#E0E0E0',
   },
 });
 
