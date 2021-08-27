@@ -5,14 +5,16 @@ import ListItem from './ListItem';
 /** Hooks */
 import {useLoadMedia} from '../hooks/ApiHooks';
 
-const List = () => {
+const List = ({navigation}) => {
   const mediaArray = useLoadMedia();
 
   return (
     <FlatList
       data={mediaArray}
       keyExtractor={(item) => item.file_id.toString()}
-      renderItem={({item}) => <ListItem singleMedia={item} />}
+      renderItem={({item}) => (
+        <ListItem navigation={navigation} singleMedia={item} />
+      )}
     />
   );
 };

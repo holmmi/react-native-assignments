@@ -4,20 +4,25 @@ import PropTypes from 'prop-types';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
-const ListItem = (props) => {
+const ListItem = ({navigation, singleMedia}) => {
+  const onPressItem = () => {
+    navigation.navigate('Single', {
+      title: singleMedia.title,
+      fileName: singleMedia.filename,
+    });
+  };
+
   return (
-    <TouchableOpacity style={styles.mediaItem}>
+    <TouchableOpacity style={styles.mediaItem} onPress={onPressItem}>
       <View style={styles.itemImageContainer}>
         <Image
           style={styles.itemImage}
-          source={{uri: mediaUploads + props.singleMedia.thumbnails.w640}}
+          source={{uri: mediaUploads + singleMedia.thumbnails.w640}}
         />
       </View>
       <View style={styles.itemTextContainer}>
-        <Text style={styles.itemCaption}>{props.singleMedia.title}</Text>
-        <Text style={styles.itemDescription}>
-          {props.singleMedia.description}
-        </Text>
+        <Text style={styles.itemCaption}>{singleMedia.title}</Text>
+        <Text style={styles.itemDescription}>{singleMedia.description}</Text>
       </View>
     </TouchableOpacity>
   );
