@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, Text, Image, View} from 'react-native';
+import AsyncImage from '../components/AsyncImage';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
@@ -10,7 +11,11 @@ const Single = ({route}) => {
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>{title}</Text>
-        <Image source={{uri: mediaUploads + fileName}} style={styles.image} />
+        <AsyncImage
+          sourceUrl={mediaUploads + fileName}
+          style={styles.image}
+          indicatorColor="#ccc"
+        />
       </View>
     </SafeAreaView>
   );

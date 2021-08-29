@@ -17,10 +17,10 @@ const TabScreen = () => {
         tabBarIcon: ({color, size}) => {
           let iconName;
           switch (route.name) {
-            case 'Home':
+            case 'HomeTab':
               iconName = 'home-outline';
               break;
-            case 'Profile':
+            case 'ProfileTab':
               iconName = 'person-outline';
               break;
           }
@@ -30,8 +30,12 @@ const TabScreen = () => {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="HomeTab" component={Home} options={{title: 'Home'}} />
+      <Tab.Screen
+        name="ProfileTab"
+        component={Profile}
+        options={{title: 'Profile'}}
+      />
     </Tab.Navigator>
   );
 };

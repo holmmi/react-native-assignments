@@ -1,5 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import AsyncImage from './AsyncImage';
 import PropTypes from 'prop-types';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
@@ -15,9 +16,9 @@ const ListItem = ({navigation, singleMedia}) => {
   return (
     <TouchableOpacity style={styles.mediaItem} onPress={onPressItem}>
       <View style={styles.itemImageContainer}>
-        <Image
+        <AsyncImage
+          sourceUrl={mediaUploads + singleMedia.thumbnails.w640}
           style={styles.itemImage}
-          source={{uri: mediaUploads + singleMedia.thumbnails.w640}}
         />
       </View>
       <View style={styles.itemTextContainer}>
