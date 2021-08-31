@@ -47,12 +47,15 @@ const apiLogIn = async (inputs) => {
   }
 };
 
-const checkToken = async (token) => {
+const getUserDetails = async (token) => {
   try {
     const response = await fetch(`${apiUrl}/users/user`, {
       headers: {'x-access-token': token},
     });
-    return response.ok;
+    if (response.ok) {
+      return response.json();
+    }
+    return null;
   } catch (error) {
     throw error;
   }
@@ -75,4 +78,4 @@ const register = async (inputs) => {
   }
 };
 
-export {useLoadMedia, apiLogIn, checkToken, register};
+export {useLoadMedia, apiLogIn, getUserDetails, register};
