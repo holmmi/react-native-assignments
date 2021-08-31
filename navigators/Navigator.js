@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import {Icon} from 'react-native-elements';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
@@ -26,7 +26,9 @@ const TabScreen = () => {
               iconName = 'person-outline';
               break;
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <Icon type="ionicon" name={iconName} size={size} color={color} />
+          );
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',

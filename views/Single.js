@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text, Image, View} from 'react-native';
-import AsyncImage from '../components/AsyncImage';
+import {StyleSheet, SafeAreaView, ActivityIndicator} from 'react-native';
+import {Card} from 'react-native-elements';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
@@ -9,14 +9,16 @@ const Single = ({route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>{title}</Text>
-        <AsyncImage
-          sourceUrl={mediaUploads + fileName}
+      <Card>
+        <Card.Title>{title}</Card.Title>
+        <Card.Divider />
+        <Card.Image
+          resizeMode="cover"
           style={styles.image}
-          indicatorColor="#ccc"
+          source={{uri: mediaUploads + fileName}}
+          PlaceholderContent={<ActivityIndicator color="#fff" size="large" />}
         />
-      </View>
+      </Card>
     </SafeAreaView>
   );
 };
@@ -25,17 +27,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
     paddingTop: 40,
   },
-  title: {
-    textAlign: 'center',
-  },
   image: {
-    marginTop: 10,
-    width: 200,
-    height: 200,
+    height: 400,
   },
 });
 

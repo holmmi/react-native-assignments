@@ -78,4 +78,20 @@ const register = async (inputs) => {
   }
 };
 
-export {useLoadMedia, apiLogIn, getUserDetails, register};
+const getUserAvatar = async (userId) => {
+  try {
+    const response = await fetch(`${apiUrl}/tags/avatar_${userId}`);
+    let avatar;
+    if (response.ok) {
+      const userMedia = await response.json();
+      if (userMedia.length > 0) {
+        avatar = userMedia[0].filename;
+      }
+    }
+    return avatar;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {useLoadMedia, apiLogIn, getUserDetails, register, getUserAvatar};

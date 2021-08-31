@@ -1,7 +1,7 @@
 import React from 'react';
-import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import AsyncImage from './AsyncImage';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import {ListItem as NBListItem, Avatar, Button} from 'react-native-elements';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
@@ -14,18 +14,21 @@ const ListItem = ({navigation, singleMedia}) => {
   };
 
   return (
-    <TouchableOpacity style={styles.mediaItem} onPress={onPressItem}>
-      <View style={styles.itemImageContainer}>
-        <AsyncImage
-          sourceUrl={mediaUploads + singleMedia.thumbnails.w640}
-          style={styles.itemImage}
-        />
-      </View>
-      <View style={styles.itemTextContainer}>
-        <Text style={styles.itemCaption}>{singleMedia.title}</Text>
-        <Text style={styles.itemDescription}>{singleMedia.description}</Text>
-      </View>
-    </TouchableOpacity>
+    <NBListItem bottomDivider>
+      <Avatar
+        source={{uri: mediaUploads + singleMedia.thumbnails.w640}}
+        renderPlaceholderContent={
+          <ActivityIndicator color="#ccc" size="small" />
+        }
+        placeholderStyle={{backgroundColor: '#fff'}}
+        size="large"
+      />
+      <NBListItem.Content>
+        <NBListItem.Title>{singleMedia.title}</NBListItem.Title>
+        <NBListItem.Subtitle>{singleMedia.description}</NBListItem.Subtitle>
+      </NBListItem.Content>
+      <Button title="View" onPress={onPressItem} />
+    </NBListItem>
   );
 };
 

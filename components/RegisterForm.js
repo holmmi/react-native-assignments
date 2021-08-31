@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Button, Alert} from 'react-native';
-import FormTextInput from './FormTextInput';
+import {View, Alert} from 'react-native';
 import useSignUpForm from '../hooks/RegisterHooks';
 import {register} from '../hooks/ApiHooks';
+import {Text, Input, Button} from 'react-native-elements';
 
-const RegisterForm = ({navigation}) => {
+const RegisterForm = () => {
   const {inputs, handleInputChange} = useSignUpForm();
 
   const doRegister = async () => {
@@ -18,25 +18,28 @@ const RegisterForm = ({navigation}) => {
 
   return (
     <View>
-      <FormTextInput
+      <Text h2 style={{textAlign: 'center', fontWeight: 'bold'}}>
+        Register
+      </Text>
+      <Input
         autoCapitalize="none"
-        placeholder="username"
+        placeholder="Username"
         onChangeText={(txt) => handleInputChange('username', txt)}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
-        placeholder="password"
+        placeholder="Password"
         onChangeText={(txt) => handleInputChange('password', txt)}
         secureTextEntry={true}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
-        placeholder="email"
+        placeholder="E-mail"
         onChangeText={(txt) => handleInputChange('email', txt)}
       />
-      <FormTextInput
+      <Input
         autoCapitalize="none"
-        placeholder="full name"
+        placeholder="Full name"
         onChangeText={(txt) => handleInputChange('full_name', txt)}
       />
       <Button title="Register!" onPress={doRegister} />

@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
-import {View, Button, Alert} from 'react-native';
-import FormTextInput from './FormTextInput';
+import {View, Alert} from 'react-native';
 import useLoginForm from '../hooks/LoginHooks';
 import {apiLogIn} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Text, Input, Button} from 'react-native-elements';
 
-const LoginForm = ({navigation}) => {
+const LoginForm = () => {
   const {inputs, handleInputChange} = useLoginForm();
   const {setIsLoggedIn, setUser} = useContext(MainContext);
 
@@ -24,14 +24,17 @@ const LoginForm = ({navigation}) => {
 
   return (
     <View>
-      <FormTextInput
+      <Text h2 style={{textAlign: 'center', fontWeight: 'bold'}}>
+        Login
+      </Text>
+      <Input
+        placeholder="Username"
         autoCapitalize="none"
-        placeholder="username"
         onChangeText={(txt) => handleInputChange('username', txt)}
       />
-      <FormTextInput
+      <Input
+        placeholder="Password"
         autoCapitalize="none"
-        placeholder="password"
         onChangeText={(txt) => handleInputChange('password', txt)}
         secureTextEntry={true}
       />
