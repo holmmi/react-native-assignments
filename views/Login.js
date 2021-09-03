@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, KeyboardAvoidingView} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -9,6 +9,7 @@ import RegisterForm from '../components/RegisterForm';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
@@ -24,13 +25,20 @@ const Login = ({navigation}) => {
     getToken();
   }, []);
 
+  const switchForms = () => {
+    setIsRegistering(!isRegistering);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <LoginForm navigation={navigation} />
-      <RegisterForm navigation={navigation} />
+      {isRegistering ? (
+        <RegisterForm navigation={navigation} switchForms={switchForms} />
+      ) : (
+        <LoginForm navigation={navigation} switchForms={switchForms} />
+      )}
     </KeyboardAvoidingView>
   );
 };

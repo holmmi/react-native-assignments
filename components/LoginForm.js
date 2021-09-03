@@ -5,8 +5,9 @@ import {apiLogIn} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Text, Input, Button} from 'react-native-elements';
+import PropTypes from 'prop-types';
 
-const LoginForm = () => {
+const LoginForm = ({switchForms}) => {
   const {inputs, handleInputChange} = useLoginForm();
   const {setIsLoggedIn, setUser} = useContext(MainContext);
 
@@ -39,8 +40,18 @@ const LoginForm = () => {
         secureTextEntry={true}
       />
       <Button title="Login!" onPress={doLogin} />
+      <Button
+        title="No account yet?"
+        type="clear"
+        onPress={switchForms}
+        style={{paddingTop: 10}}
+      />
     </View>
   );
+};
+
+LoginForm.propTypes = {
+  switchForms: PropTypes.func,
 };
 
 export default LoginForm;

@@ -94,4 +94,24 @@ const getUserAvatar = async (userId) => {
   }
 };
 
-export {useLoadMedia, apiLogIn, getUserDetails, register, getUserAvatar};
+const checkIfUsernameExists = async (username) => {
+  try {
+    const response = await fetch(`${apiUrl}/users/username/${username}`);
+    if (response.ok) {
+      const json = await response.json();
+      return json.available;
+    }
+    return false;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  useLoadMedia,
+  apiLogIn,
+  getUserDetails,
+  register,
+  getUserAvatar,
+  checkIfUsernameExists,
+};
