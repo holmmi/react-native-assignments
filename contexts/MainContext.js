@@ -6,9 +6,19 @@ const MainContext = React.createContext();
 const MainProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [refreshImages, setRefreshImages] = useState(true);
 
   return (
-    <MainContext.Provider value={{isLoggedIn, setIsLoggedIn, user, setUser}}>
+    <MainContext.Provider
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser,
+        refreshImages,
+        setRefreshImages,
+      }}
+    >
       {props.children}
     </MainContext.Provider>
   );

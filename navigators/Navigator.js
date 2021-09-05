@@ -7,6 +7,7 @@ import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
 import Login from '../views/Login';
+import Upload from '../views/Upload';
 import {MainContext} from '../contexts/MainContext';
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,9 @@ const TabScreen = () => {
             case 'ProfileTab':
               iconName = 'person-outline';
               break;
+            case 'UploadTab':
+              iconName = 'cloud-upload';
+              break;
           }
           return (
             <Icon type="ionicon" name={iconName} size={size} color={color} />
@@ -39,6 +43,11 @@ const TabScreen = () => {
         name="ProfileTab"
         component={Profile}
         options={{title: 'Profile'}}
+      />
+      <Tab.Screen
+        name="UploadTab"
+        component={Upload}
+        options={{title: 'Upload'}}
       />
     </Tab.Navigator>
   );

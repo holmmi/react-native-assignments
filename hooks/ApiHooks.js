@@ -1,30 +1,40 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
+import {MainContext} from '../contexts/MainContext';
+import tags from '../constants/tags';
 
 const apiUrl = 'https://media.mw.metropolia.fi/wbma';
+const {UNIQUE_TAG} = tags;
 
 const useLoadMedia = () => {
   const [mediaArray, setMediaArray] = useState(null);
+  const {refreshImages, setRefreshImages} = useContext(MainContext);
 
   useEffect(() => {
-    const loadMedia = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/media`);
-        const json = await response.json();
-        const images = json.filter((item) => item.media_type === 'image');
-        Promise.all(
-          images.map(async (image) => {
-            const imageResponse = await fetch(
-              `${apiUrl}/media/${image.file_id}`
-            );
-            return await imageResponse.json();
-          })
-        ).then((details) => setMediaArray(details));
-      } catch (error) {
-        throw error;
-      }
-    };
-    loadMedia();
-  }, []);
+    if (refreshImages) {
+      const loadMedia = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/tags/${UNIQUE_TAG}`);
+          const json = await response.json();
+          const images = json.filter((item) => item.media_type === 'image');
+          const details = await Promise.all(
+            images.map(async (image) => {
+              const imageResponse = await fetch(
+                `${apiUrl}/media/${image.file_id}`
+              );
+              return await imageResponse.json();
+            })
+          );
+          setMediaArray(details);
+        } catch (error) {
+          throw error;
+        }
+      };
+      setTimeout(() => {
+        loadMedia();
+        setRefreshImages(false);
+      }, 1000);
+    }
+  }, [refreshImages]);
   return mediaArray;
 };
 
@@ -107,6 +117,40 @@ const checkIfUsernameExists = async (username) => {
   }
 };
 
+const uploadFile = async (token, uploadInputs) => {
+  const formData = new FormData();
+  const keys = Object.keys(uploadInputs);
+  keys.forEach((key) => formData.append(key, uploadInputs[key]));
+  try {
+    const response = await fetch(`${apiUrl}/media`, {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+    if (response.ok) {
+      const json = await response.json();
+      const tagResponse = await fetch(`${apiUrl}/tags`, {
+        method: 'POST',
+        headers: {
+          'x-access-token': token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file_id: json.file_id,
+          tag: UNIQUE_TAG,
+        }),
+      });
+      return tagResponse.ok;
+    }
+    return response.ok;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   useLoadMedia,
   apiLogIn,
@@ -114,4 +158,5 @@ export {
   register,
   getUserAvatar,
   checkIfUsernameExists,
+  uploadFile,
 };

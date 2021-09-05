@@ -1,4 +1,4 @@
-import validate, {result} from 'validate.js';
+import validate from 'validate.js';
 import {checkIfUsernameExists} from '../hooks/ApiHooks';
 
 validate.validators.usernameExists = async (
