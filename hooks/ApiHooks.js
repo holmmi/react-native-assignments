@@ -1,6 +1,7 @@
 import {useEffect, useState, useContext} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import tags from '../constants/tags';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const apiUrl = 'https://media.mw.metropolia.fi/wbma';
 const {UNIQUE_TAG} = tags;
@@ -15,7 +16,9 @@ const useLoadMedia = () => {
         try {
           const response = await fetch(`${apiUrl}/tags/${UNIQUE_TAG}`);
           const json = await response.json();
-          const images = json.filter((item) => item.media_type === 'image');
+          const images = json.filter(
+            (item) => item.media_type === 'image' || item.media_type === 'video'
+          );
           const details = await Promise.all(
             images.map(async (image) => {
               const imageResponse = await fetch(
@@ -36,6 +39,50 @@ const useLoadMedia = () => {
     }
   }, [refreshImages]);
   return mediaArray;
+};
+
+const useMyMedia = () => {
+  const [media, setMedia] = useState(null);
+  const {refreshImages, setRefreshImages} = useContext(MainContext);
+
+  const loadUserMedia = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      const response = await fetch(`${apiUrl}/media/user`, {
+        headers: {
+          'x-access-token': userToken,
+        },
+      });
+      if (response.ok) {
+        const json = await response.json();
+        const files = json.filter(
+          (item) => item.media_type === 'image' || item.media_type === 'video'
+        );
+        const details = await Promise.all(
+          files.map(async (file) => {
+            const fileResponse = await fetch(`${apiUrl}/media/${file.file_id}`);
+            return await fileResponse.json();
+          })
+        );
+        setMedia(details);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    loadUserMedia();
+  }, []);
+
+  useEffect(() => {
+    if (refreshImages) {
+      loadUserMedia();
+      setRefreshImages(false);
+    }
+  }, [refreshImages]);
+
+  return media;
 };
 
 const apiLogIn = async (inputs) => {
@@ -151,12 +198,65 @@ const uploadFile = async (token, uploadInputs) => {
   }
 };
 
+const getUserInformation = async (token, userId) => {
+  try {
+    const response = await fetch(`${apiUrl}/users/${userId}`, {
+      headers: {
+        'x-access-token': token,
+      },
+    });
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    }
+    return null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteFile = async (fileId) => {
+  try {
+    const userToken = await AsyncStorage.getItem('userToken');
+    const response = await fetch(`${apiUrl}/media/${fileId}`, {
+      headers: {
+        'x-access-token': userToken,
+      },
+      method: 'DELETE',
+    });
+    return response.ok;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateFile = async (fileId, inputs) => {
+  try {
+    const userToken = await AsyncStorage.getItem('userToken');
+    const response = await fetch(`${apiUrl}/media/${fileId}`, {
+      headers: {
+        'x-access-token': userToken,
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+      body: JSON.stringify(inputs),
+    });
+    return response.ok;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   useLoadMedia,
+  useMyMedia,
   apiLogIn,
   getUserDetails,
   register,
   getUserAvatar,
   checkIfUsernameExists,
   uploadFile,
+  getUserInformation,
+  deleteFile,
+  updateFile,
 };

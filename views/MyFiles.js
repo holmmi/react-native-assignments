@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, StatusBar} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import List from '../components/List';
 
-const Home = ({navigation}) => {
+const MyFiles = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <List navigation={navigation} loadUserMedia={false} />
+      <List navigation={navigation} loadUserMedia={true} />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default MyFiles;

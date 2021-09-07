@@ -7,7 +7,7 @@ import {getUserAvatar} from '../hooks/ApiHooks';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const {setIsLoggedIn, user} = useContext(MainContext);
   const [avatarFile, setAvatarFile] = useState(null);
 
@@ -46,6 +46,13 @@ const Profile = () => {
         <Button
           title="Logout"
           onPress={logOut}
+          style={styles.button}
+          buttonStyle={{backgroundColor: 'tomato'}}
+        />
+        <Button
+          title="My files"
+          onPress={() => navigation.navigate('MyFiles')}
+          style={styles.button}
           buttonStyle={{backgroundColor: 'tomato'}}
         />
       </Card>
@@ -60,6 +67,10 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     paddingTop: 40,
+  },
+  button: {
+    marginTop: 4,
+    marginBottom: 4,
   },
 });
 

@@ -70,11 +70,14 @@ const useUploadForm = () => {
 
   return {
     uploadInputs,
+    setUploadInputs,
     handleInputChange,
     resetForm,
     formErrors,
+    setFormErrors,
     validateForm,
     formValidated,
+    setFormValidated,
   };
 };
 

@@ -1,15 +1,34 @@
-import React from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {ActivityIndicator, Alert, View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {ListItem as NBListItem, Avatar, Button} from 'react-native-elements';
+import {deleteFile} from '../hooks/ApiHooks';
+import {MainContext} from '../contexts/MainContext';
 
 const mediaUploads = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
-const ListItem = ({navigation, singleMedia}) => {
-  const onPressItem = () => {
+const ListItem = ({navigation, singleMedia, loadUserMedia}) => {
+  const {setRefreshImages} = useContext(MainContext);
+
+  const onPressViewItem = () => {
     navigation.navigate('Single', {
-      title: singleMedia.title,
-      fileName: singleMedia.filename,
+      media: singleMedia,
+    });
+  };
+
+  const onPressDelete = async () => {
+    const removeSucceed = await deleteFile(singleMedia.file_id);
+    if (removeSucceed) {
+      setRefreshImages(true);
+      Alert.alert('Successfully removed file.');
+    } else {
+      Alert.alert('Could not remove file. Please try again later.');
+    }
+  };
+
+  const onPressModify = async () => {
+    navigation.navigate('Modify', {
+      media: singleMedia,
     });
   };
 
@@ -27,7 +46,29 @@ const ListItem = ({navigation, singleMedia}) => {
         <NBListItem.Title>{singleMedia.title}</NBListItem.Title>
         <NBListItem.Subtitle>{singleMedia.description}</NBListItem.Subtitle>
       </NBListItem.Content>
-      <Button title="View" onPress={onPressItem} />
+      <View style={styles.itemButtons}>
+        <Button
+          title="View"
+          onPress={onPressViewItem}
+          style={styles.itemButton}
+        />
+        {loadUserMedia && (
+          <>
+            <Button
+              title="Modify"
+              onPress={onPressModify}
+              style={styles.itemButton}
+              buttonStyle={{backgroundColor: 'orange'}}
+            />
+            <Button
+              title="Delete"
+              onPress={onPressDelete}
+              style={styles.itemButton}
+              buttonStyle={{backgroundColor: 'red'}}
+            />
+          </>
+        )}
+      </View>
     </NBListItem>
   );
 };
@@ -63,10 +104,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 6,
   },
+  itemButtons: {
+    padding: 4,
+    justifyContent: 'center',
+  },
+  itemButton: {
+    marginTop: 4,
+    marginBottom: 4,
+  },
 });
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object,
+  loadUserMedia: PropTypes.bool,
 };
 
 export default ListItem;
